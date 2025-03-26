@@ -8,52 +8,63 @@
 <body>
   <div class="container">
     <h1>Auto Color by Numbers</h1>
-    <p>Upload an image and choose your level of detail to generate a numbered and colored output.</p>
+    <p>Upload an image and choose your detail level to generate numbered and colored outputs.</p>
     
+    <!-- Upload Section -->
     <div class="upload-section">
-      <input type="file" id="imageInput">
-      <button id="uploadBtn">Upload Image</button>
+      <input type="file" id="imageInput" accept="image/*">
       <p id="uploadMsg"></p>
-      <img id="uploadedImage" src="" alt="Uploaded Image" style="display:none; max-width: 100%;">
+      <button id="startOverBtn" style="display:none;">Start Over</button>
     </div>
     
-    <div class="options-section" style="display:none;">
-      <label>
-        <input type="radio" name="detail" value="basic" checked> Basic
-      </label>
-      <label>
-        <input type="radio" name="detail" value="normal"> Normal
-      </label>
-      <label>
-        <input type="radio" name="detail" value="detailed"> Detailed
-      </label>
-      <button id="processBtn">Process Image</button>
-    </div>
-    
-    <div class="log-section" style="display:none;">
-      <h2>Processing Log</h2>
-      <div id="log"></div>
-    </div>
-    
-    <div class="result-section" style="display:none;">
-      <h2>Results</h2>
-      <div class="result-images">
-        <div>
-          <h3>Numbered Image</h3>
-          <img id="numberedImg" src="" alt="Numbered Image">
-          <a id="downloadNumbered" href="" download="output_numbered.png">Download Numbered</a>
+    <!-- Main content area: original image + options and log / processed images -->
+    <div class="image-and-options" style="display:none;">
+      <div class="image-section">
+        <img id="uploadedImage" src="" alt="Uploaded Image">
+      </div>
+      <div class="side-panel">
+        <!-- Options for detail level and process button -->
+        <div class="options-section">
+          <div class="detail-options">
+            <label>
+              <input type="radio" name="detail" value="basic" checked> Basic
+            </label>
+            <label>
+              <input type="radio" name="detail" value="normal"> Normal
+            </label>
+            <label>
+              <input type="radio" name="detail" value="detailed"> Detailed
+            </label>
+          </div>
+          <button id="processBtn">Process Image</button>
         </div>
-        <div>
-          <h3>Colored Image</h3>
-          <img id="coloredImg" src="" alt="Colored Image">
-          <a id="downloadColored" href="" download="output_colored.png">Download Colored</a>
+        <!-- Processing log (shown during processing) -->
+        <div class="log-section" style="display:none;">
+          <h2>Processing Log</h2>
+          <div id="log"></div>
+        </div>
+        <!-- Processed images (shown after processing finishes) -->
+        <div class="processed-section" style="display:none;">
+          <div class="processed-image">
+            <h3>Numbered Image</h3>
+            <img id="numberedImg" src="" alt="Numbered Image">
+            <a id="downloadNumbered" href="" download="output_numbered.png">Download Numbered</a>
+          </div>
+          <div class="processed-image">
+            <h3>Colored Image</h3>
+            <img id="coloredImg" src="" alt="Colored Image">
+            <a id="downloadColored" href="" download="output_colored.png">Download Colored</a>
+          </div>
         </div>
       </div>
-      <div class="master-list">
-        <h3>Master List</h3>
-        <div id="masterList"></div>
-      </div>
     </div>
+    
+    <!-- Master List Section -->
+    <div class="master-list-section" style="display:none;">
+      <h2>Master List</h2>
+      <div id="masterList"></div>
+    </div>
+    
   </div>
   
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>

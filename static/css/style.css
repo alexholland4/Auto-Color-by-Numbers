@@ -7,7 +7,7 @@ body {
   
   .container {
     width: 90%;
-    max-width: 800px;
+    max-width: 1000px;
     margin: 30px auto;
     background: #fff;
     padding: 20px;
@@ -18,43 +18,91 @@ body {
     text-align: center;
   }
   
-  .upload-section, .options-section, .log-section, .result-section {
-    margin: 20px 0;
+  .upload-section {
+    text-align: center;
+    margin-bottom: 20px;
   }
   
-  #log {
-    background: #eee;
-    padding: 10px;
-    height: 150px;
-    overflow-y: scroll;
-    border: 1px solid #ccc;
-  }
-  
-  .result-images {
+  .image-and-options {
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
   }
   
-  .result-images div {
-    margin: 10px;
+  .image-section {
+    flex: 1;
     text-align: center;
   }
   
-  .master-list {
-    margin-top: 20px;
+  .image-section img {
+    max-width: 400px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+    border: 1px solid #ccc;
   }
   
-  .master-list div {
+  .side-panel {
+    flex: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 5px;
+  }
+  
+  .options-section {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .detail-options {
+    margin-bottom: 10px;
+  }
+  
+  .log-section {
+    background: #eee;
+    padding: 10px;
+    width: 100%;
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+  }
+  
+  .processed-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .processed-image {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .processed-image img {
+    max-width: 300px;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    border: 1px solid #ccc;
+  }
+  
+  .master-list-section {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .master-list-section .item {
+    margin: 5px;
+    display: inline-flex;
+    align-items: center;
   }
   
   .color-square {
     width: 20px;
     height: 20px;
-    margin-right: 10px;
+    margin-right: 5px;
     border: 1px solid #000;
   }
   
