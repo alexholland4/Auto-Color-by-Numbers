@@ -53,7 +53,7 @@ def auto_color_by_numbers(
     
     Returns:
       output_img: White image with outlines and labels.
-      master_list: Dictionary mapping region label (as string) to average RGB color.
+      master_list: Dictionary mapping region label (as string) to average color (in RGB).
       final_mask: Final segmentation mask (for further processing).
     """
     
@@ -157,10 +157,12 @@ def auto_color_by_numbers(
         mask = final_mask == label_val
         avg_hsv = np.mean(hsv[mask], axis=0)
         avg_hsv_uint8 = np.array(avg_hsv, dtype=np.uint8).reshape((1, 1, 3))
+        # Convert average HSV color to BGR first
         avg_bgr = cv2.cvtColor(avg_hsv_uint8, cv2.COLOR_HSV2BGR)[0][0]
+        # Convert BGR to RGB for storage
         avg_rgb = (int(avg_bgr[2]), int(avg_bgr[1]), int(avg_bgr[0]))
-        master_list[str(label_val + 1)] = avg_rgb
-
+        master_list[str(label_val + 1)] = avg_rgb  # Store as RGB
+    
     print("[INFO] Generating final output image with contours and labels...")
     output_img = np.full((h, w, 3), 255, dtype=np.uint8)
     
@@ -169,13 +171,11 @@ def auto_color_by_numbers(
         contours, _ = cv2.findContours(region_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cv2.drawContours(output_img, contours, -1, (0, 0, 0), 2)
         
-        # For each contour, use distance transform for optimal label placement.
+        # Use distance transform for optimal label placement.
         for cnt in contours:
-            # Create a filled mask for the contour.
             mask = np.zeros((h, w), dtype=np.uint8)
             cv2.drawContours(mask, [cnt], -1, 255, thickness=cv2.FILLED)
             dist_transform = cv2.distanceTransform(mask, cv2.DIST_L2, 5)
-            # Find the point with maximum distance (i.e. furthest from the edge)
             _, _, _, maxLoc = cv2.minMaxLoc(dist_transform)
             cv2.putText(output_img, str(label_val + 1), maxLoc,
                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2, cv2.LINE_AA)
@@ -192,17 +192,23 @@ def generate_test_colored_image(final_mask, master_list):
     """
     Generate a test image by filling each region in the segmentation mask
     with its corresponding color from the master list.
+    
+    The master list stores colors as RGB. Convert these values to BGR before filling,
+    since OpenCV uses BGR.
     """
     h, w = final_mask.shape
     colored_img = np.zeros((h, w, 3), dtype=np.uint8)
     for label_val in np.unique(final_mask):
-        color = master_list[str(label_val + 1)]
-        colored_img[final_mask == label_val] = color
+        # Get the stored RGB color
+        rgb_color = master_list[str(label_val + 1)]
+        # Convert to BGR by swapping the first and last channels
+        bgr_color = (rgb_color[2], rgb_color[1], rgb_color[0])
+        colored_img[final_mask == label_val] = bgr_color
     return colored_img
 
 # Example usage:
 if __name__ == "__main__":
-    input_path = "test_input.JPEG"  # Replace with your image path
+    input_path = "espresso_ex2.JPG"  # Replace with your image path
     image = cv2.imread(input_path)
     if image is None:
         raise ValueError("Image not found. Please check the file path.")
