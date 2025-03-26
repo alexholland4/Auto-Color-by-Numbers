@@ -1,6 +1,7 @@
+/* Base styles */
 body {
-    font-family: Arial, sans-serif;
-    background: #f9f9f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
     margin: 0;
     padding: 0;
   }
@@ -10,75 +11,133 @@ body {
     max-width: 1000px;
     margin: 30px auto;
     background: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   }
   
+  /* Headings and introductory text */
   h1, h2, h3 {
     text-align: center;
     margin: 10px 0;
+    color: #333;
   }
   
+  p {
+    text-align: center;
+    color: #555;
+    font-size: 1.1em;
+  }
+  
+  /* Upload section */
   .upload-section {
     text-align: center;
     margin-bottom: 20px;
   }
   
-  /* 
-    Align items vertically in the center so that 
-    the side panel (radio options) lines up with the image. 
-  */
+  .upload-section input[type="file"] {
+    padding: 10px;
+    border: 2px dashed #bbb;
+    border-radius: 5px;
+    background: #fafafa;
+    cursor: pointer;
+    display: inline-block;
+    transition: border-color 0.2s;
+  }
+  
+  .upload-section input[type="file"]:hover {
+    border-color: #888;
+  }
+  
+  .upload-section button {
+    background: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.2s;
+  }
+  
+  .upload-section button:hover {
+    background: #0056b3;
+  }
+  
+  /* Main image and options area */
   .image-and-options {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* This centers side-panel content vertically with the image */
+    align-items: center;
     margin-bottom: 20px;
   }
   
-  /* Left side: Original uploaded image container */
+  /* Uploaded image section */
   .image-section {
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;  /* Center the heading and image horizontally */
+    align-items: center;
   }
   
-  /* Limit display size but keep aspect ratio */
   .image-section img {
     max-width: 400px;
     max-height: 400px;
     width: auto;
     height: auto;
     border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
   }
   
-  /* Right side: Options, log, or processed images */
+  /* Side panel for options, log, or processed images */
   .side-panel {
     flex: 1;
     margin-left: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center; 
-    /* If you want the entire side-panel content 
-       (options, log, processed images) to be 
-       centered vertically, you could also add 
-       justify-content: center; 
-       But that might push the log or processed images 
-       to the center as well. 
-    */
+    align-items: center;
+    justify-content: center;
   }
   
-  /* Options section can be centered horizontally */
+  /* Options section */
   .options-section {
     text-align: center;
     margin-bottom: 20px;
   }
   
-  /* The detail radio options */
   .detail-options {
     margin-bottom: 10px;
   }
   
+  .detail-options label {
+    margin-right: 10px;
+    font-size: 1em;
+    color: #333;
+  }
+  
+  .detail-options input[type="radio"] {
+    margin-right: 5px;
+  }
+  
+  /* Process image button */
+  .options-section button {
+    background: #28a745;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.2s;
+  }
+  
+  .options-section button:hover {
+    background: #1e7e34;
+  }
+  
+  /* Processing log styling */
   .log-section {
     background: #eee;
     padding: 10px;
@@ -86,9 +145,10 @@ body {
     height: 300px;
     overflow-y: auto;
     border: 1px solid #ccc;
+    border-radius: 5px;
   }
   
-  /* Processed images side by side */
+  /* Processed images section */
   .processed-section {
     display: flex;
     flex-direction: row;
@@ -101,16 +161,37 @@ body {
     text-align: center;
   }
   
-  /* Match the original image's constraints (400x400) */
+  .processed-image h3 {
+    margin-bottom: 10px;
+  }
+  
   .processed-image img {
     max-width: 400px;
     max-height: 400px;
     width: auto;
     height: auto;
     border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
   }
   
-  /* Master list at the bottom */
+  /* Download buttons */
+  .processed-image a {
+    display: inline-block;
+    background: #17a2b8;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: background 0.2s;
+  }
+  
+  .processed-image a:hover {
+    background: #117a8b;
+  }
+  
+  /* Master list section */
   .master-list-section {
     margin-top: 20px;
     text-align: center;

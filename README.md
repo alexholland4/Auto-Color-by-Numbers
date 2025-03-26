@@ -7,6 +7,7 @@ Auto Color by Numbers is a computer vision project that transforms any input ima
 *(Add screenshots of the web app here)*
 
 - **Screenshot 1:** Home page with image upload.
+(./README_images/home_screen.jpg)
 - **Screenshot 2:** Processing log with live updates.
 - **Screenshot 3:** Final output displaying the numbered image, colored preview, and master list.
 
@@ -67,19 +68,19 @@ Auto Color by Numbers is a computer vision project that transforms any input ima
 ## Project Structure
 
 auto-color-by-numbers/
-├── app.py                   # Flask web application
-├── color_by_numbers.py      # Core image processing functions
-├── requirements.txt         # Python dependencies
-├── README.md                # Project documentation
-├── templates/
-│   └── index.html           # HTML template for the web app
-└── static/
-    ├── css/
-    │   └── style.css        # CSS styling for the web app
-    ├── js/
-    │   └── main.js          # JavaScript for client-side logic
-    ├── uploads/             # Directory for uploaded images
-    └── processed/           # Directory for processed output images
+├── app.py                   # Flask web application<br />
+├── color_by_numbers.py      # Core image processing functions<br />
+├── requirements.txt         # Python dependencies<br />
+├── README.md                # Project documentation<br />
+├── templates/<br />
+│   └── index.html           # HTML template for the web app<br />
+└── static/<br />
+    ├── css/<br />
+    │   └── style.css        # CSS styling for the web app<br />
+    ├── js/<br />
+    │   └── main.js          # JavaScript for client-side logic<br />
+    ├── uploads/             # Directory for uploaded images<br />
+    └── processed/           # Directory for processed output images<br />
 
 ## Author
 
