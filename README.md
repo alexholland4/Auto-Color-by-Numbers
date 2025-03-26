@@ -1,4 +1,4 @@
-# Auto Color by Numbers
+# Auto "Color by Numbers" Generator
 
 Auto Color by Numbers is a computer vision project that transforms any input image into a "color by numbers" style output. The application segments the image into distinct color regions, outlines each region with a unique number, and generates a master list mapping these numbers to their representative RGB colors. A web interface built with Flask allows users to upload images, choose the level of detail, and view/download the processed results.
 
@@ -34,7 +34,7 @@ Auto Color by Numbers is a computer vision project that transforms any input ima
    - A colored preview image is generated to show how the regions look when filled with their representative colors.
    - Both images are available for download.
 
-## Running Locally
+## Try It Out! (How to Run Locally)
 
 ### Prerequisites
 
@@ -46,7 +46,7 @@ Auto Color by Numbers is a computer vision project that transforms any input ima
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/yourusername/auto-color-by-numbers.git
+   git clone https://github.com/alexholland4/auto-color-by-numbers.git
    cd auto-color-by-numbers
 
 2. **Create a Virtual Environment (Optional but recommended):**
@@ -71,7 +71,7 @@ Auto Color by Numbers is a computer vision project that transforms any input ima
 
 ## Project Structure
 
-auto-color-by-numbers/
+auto-color-by-numbers/<br />
 ├── app.py                   # Flask web application<br />
 ├── color_by_numbers.py      # Core image processing functions<br />
 ├── requirements.txt         # Python dependencies<br />
