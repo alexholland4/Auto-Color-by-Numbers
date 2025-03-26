@@ -62,13 +62,13 @@ def process():
     def generate():
         yield "data: Starting processing...\n\n"
         time.sleep(0.5)
-        yield "data: Downsampling (if needed)...\n\n"
+        yield "data: Downsampling Image...\n\n"
         time.sleep(0.5)
         yield "data: Applying Gaussian blur...\n\n"
         time.sleep(0.5)
         yield "data: Converting color space...\n\n"
         time.sleep(0.5)
-        yield f"data: Running k-means for '{detail_option}' detail...\n\n"
+        yield f"data: Running k-means for '{detail_option}' detail (Final step, may take up to 1 minute)...\n\n"
         time.sleep(0.5)
         
         # Call the processing function
@@ -76,7 +76,7 @@ def process():
             image,
             detail_option=detail_option,
             min_region_size=1000,
-            downsample_factor=2,
+            downsample_factor=3,
             apply_morph_open=False
         )
         yield "data: Finished processing.\n\n"

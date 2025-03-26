@@ -17,12 +17,19 @@
       <button id="startOverBtn" style="display:none;">Start Over</button>
     </div>
     
-    <!-- Main content area: original image + options and log / processed images -->
+    <!-- Main content area: original image on the left, side panel (log or processed images) on the right -->
     <div class="image-and-options" style="display:none;">
+      
+      <!-- Left: Original uploaded image -->
       <div class="image-section">
+        <!-- 1) Add a header above the uploaded image -->
+        <h3 id="uploadedImageHeader">Your Uploaded Image</h3>
         <img id="uploadedImage" src="" alt="Uploaded Image">
       </div>
+      
+      <!-- Right: Options, log, or processed images -->
       <div class="side-panel">
+        
         <!-- Options for detail level and process button -->
         <div class="options-section">
           <div class="detail-options">
@@ -38,12 +45,14 @@
           </div>
           <button id="processBtn">Process Image</button>
         </div>
+        
         <!-- Processing log (shown during processing) -->
         <div class="log-section" style="display:none;">
           <h2>Processing Log</h2>
           <div id="log"></div>
         </div>
-        <!-- Processed images (shown after processing finishes) -->
+        
+        <!-- Processed images (shown after processing) side by side -->
         <div class="processed-section" style="display:none;">
           <div class="processed-image">
             <h3>Numbered Image</h3>
@@ -56,12 +65,13 @@
             <a id="downloadColored" href="" download="output_colored.png">Download Colored</a>
           </div>
         </div>
-      </div>
-    </div>
+        
+      </div> <!-- end side-panel -->
+    </div> <!-- end image-and-options -->
     
-    <!-- Master List Section -->
+    <!-- Master List Section (below everything) -->
     <div class="master-list-section" style="display:none;">
-      <h2>Master List</h2>
+      <h2>Color List</h2>
       <div id="masterList"></div>
     </div>
     

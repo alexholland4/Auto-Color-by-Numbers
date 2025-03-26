@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let uploadedFilename = '';
   
-    // Automatically upload image when file selected
+    // 1) Automatically upload on file selection
     imageInput.addEventListener('change', function() {
       const file = imageInput.files[0];
       if (!file) return;
@@ -30,25 +30,26 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
           uploadMsg.textContent = data.message;
           uploadedFilename = data.filename;
-          // Display the uploaded image (displayed in fixed dimensions via CSS)
+          // Show the uploaded image at fixed size
           uploadedImage.src = `/static/uploads/${uploadedFilename}`;
           uploadedImage.style.display = 'block';
-          // Hide the file input so upload options disappear
+          // Hide the file input so user can't upload more
           imageInput.style.display = 'none';
-          // Show the Start Over button
+          // Show "Start Over" button
           startOverBtn.style.display = 'inline-block';
-          // Show the main content container (original image + side panel)
+          // Show the main container (image + side panel)
           imageAndOptions.style.display = 'flex';
         }
       })
       .catch(err => console.error(err));
     });
   
-    // Start Over reloads the page
+    // 2) Start Over: reload the page
     startOverBtn.addEventListener('click', function() {
       window.location.reload();
     });
   
+    // 3) Process image with SSE
     processBtn.addEventListener('click', function() {
       if (!uploadedFilename) {
         alert('Please upload an image first.');
@@ -57,14 +58,14 @@ document.addEventListener('DOMContentLoaded', function() {
       // Get selected detail option
       const detailOption = document.querySelector('input[name="detail"]:checked').value;
       
-      // Hide the options panel and show processing log
+      // Hide options, show log
       document.querySelector('.options-section').style.display = 'none';
       logSection.style.display = 'block';
       processedSection.style.display = 'none';
       masterListSection.style.display = 'none';
       logDiv.innerHTML = '';
   
-      // Start processing via SSE
+      // Use SSE
       const evtSource = new EventSource('/process?' + new URLSearchParams({
         filename: uploadedFilename,
         detail_option: detailOption
@@ -72,8 +73,9 @@ document.addEventListener('DOMContentLoaded', function() {
       
       evtSource.onmessage = function(e) {
         try {
+          // If data is JSON, we've finished processing
           const result = JSON.parse(e.data);
-          // Processing finished, hide log and show processed images
+          // Hide log, show processed images side by side
           logSection.style.display = 'none';
           processedSection.style.display = 'flex';
           masterListSection.style.display = 'block';
@@ -83,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
           document.getElementById('coloredImg').src = '/' + result.colored;
           document.getElementById('downloadColored').href = '/' + result.colored;
           
-          // Build the master list display
+          // Build master list with color squares
           const masterListDiv = document.getElementById('masterList');
           masterListDiv.innerHTML = '';
           for (const [label, rgb] of Object.entries(result.master_list)) {
@@ -100,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
           }
           evtSource.close();
         } catch (err) {
-          // Otherwise, treat the message as a log update
+          // Otherwise, it's a log message
           logDiv.innerHTML += `<p>${e.data}</p>`;
           logDiv.scrollTop = logDiv.scrollHeight;
         }
