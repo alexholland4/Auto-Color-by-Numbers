@@ -7,7 +7,7 @@ Auto Color by Numbers is a computer vision project that transforms any input ima
 *(Add screenshots of the web app here)*
 
 - **Screenshot 1:** Home page with image upload.
-[Home Screen Image](./README_images/home_screen.jpg)
+![Home Screen Image](./README_images/home_screen.jpg)
 - **Screenshot 2:** Processing log with live updates.
 - **Screenshot 3:** Final output displaying the numbered image, colored preview, and master list.
 
