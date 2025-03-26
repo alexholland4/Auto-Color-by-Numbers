@@ -4,12 +4,16 @@ Auto Color by Numbers is a computer vision project that transforms any input ima
 
 ## Screenshots / Examples
 
-*(Add screenshots of the web app here)*
 
-- **Screenshot 1:** Home page with image upload.
+- **Screenshot 1:** Home page with intuitive image upload.
 ![Home Screen Image](./README_images/home_screen.jpg)
+- **Screenshot 2:** Detail level selection.
+![Detail Image](./README_images/detail_level.jpg)
 - **Screenshot 2:** Processing log with live updates.
-- **Screenshot 3:** Final output displaying the numbered image, colored preview, and master list.
+![Processing Image](./README_images/processing.jpg)
+- **Screenshot 3:** Final output displaying the numbered image, colored preview, and master color list.
+![Final Output Image](./README_images/final_output.jpg)
+
 
 ## How It Works
 
