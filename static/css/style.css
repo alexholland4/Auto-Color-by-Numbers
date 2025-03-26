@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    width: 90%;
+    max-width: 800px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1, h2, h3 {
+    text-align: center;
+  }
+  
+  .upload-section, .options-section, .log-section, .result-section {
+    margin: 20px 0;
+  }
+  
+  #log {
+    background: #eee;
+    padding: 10px;
+    height: 150px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+  }
+  
+  .result-images {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  
+  .result-images div {
+    margin: 10px;
+    text-align: center;
+  }
+  
+  .master-list {
+    margin-top: 20px;
+  }
+  
+  .master-list div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .color-square {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border: 1px solid #000;
+  }
+  

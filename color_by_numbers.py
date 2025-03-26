@@ -36,20 +36,17 @@ def remove_small_components(segmentation_mask, min_size=500):
 
 def auto_color_by_numbers(
     image,
-    threshold_option='normal',
+    detail_option='normal',   # Options: 'basic', 'normal', 'detailed'
     min_region_size=500,
     downsample_factor=1,
     apply_morph_open=False
 ):
     """
     Process an image to generate a white canvas with black outlines and numbered regions.
-    Incorporates:
-      - Downsampling for speed.
-      - Gaussian blurring.
-      - K-means clustering (with K=8).
-      - Post-processing to merge similar clusters.
-      - Removal of small regions.
-      - Improved label placement using a distance transform.
+    The level of detail is controlled by the detail_option, which adjusts k in k-means:
+      - 'basic' uses fewer clusters (less detail),
+      - 'normal' uses a medium number,
+      - 'detailed' uses more clusters (more detail).
     
     Returns:
       output_img: White image with outlines and labels.
@@ -59,7 +56,7 @@ def auto_color_by_numbers(
     
     print("[INFO] Starting 'auto_color_by_numbers'...")
 
-    # Optional downsampling
+    # Optional downsampling for speed
     if downsample_factor > 1:
         print(f"[INFO] Downsampling image by factor of {downsample_factor}...")
         h, w, _ = image.shape
@@ -76,54 +73,25 @@ def auto_color_by_numbers(
     h, w, _ = hsv.shape
     data = hsv.reshape((-1, 3)).astype(np.float32)
 
-    # K-Means Clustering with K=8
-    K = 12
-    print(f"[INFO] Running k-means with K={K}...")
+    # Determine k based on detail_option
+    k_mapping = {'basic': 8, 'normal': 12, 'detailed': 16}
+    k = k_mapping.get(detail_option, 8)
+    print(f"[INFO] Running k-means with k = {k} for '{detail_option}' detail...")
+
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
-    _, labels, centers = cv2.kmeans(data, K, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+    _, labels, centers = cv2.kmeans(data, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
     labels = labels.flatten()
 
-    print("[INFO] Merging similar cluster centers...")
-    thresholds = {'basic': 50.0, 'normal': 30.0, 'detailed': 15.0}
-    threshold_value = thresholds.get(threshold_option, 30.0)
-    parent = list(range(K))
-    
-    def find(x):
-        while parent[x] != x:
-            parent[x] = parent[parent[x]]
-            x = parent[x]
-        return x
-    
-    def union(x, y):
-        rx, ry = find(x), find(y)
-        if rx != ry:
-            parent[ry] = rx
-
-    for i in range(K):
-        for j in range(i + 1, K):
-            dist = np.linalg.norm(centers[i] - centers[j])
-            if dist < threshold_value:
-                union(i, j)
-    
-    merged_mapping = {}
-    new_label = 0
-    for i in range(K):
-        root = find(i)
-        if root not in merged_mapping:
-            merged_mapping[root] = new_label
-            new_label += 1
-        merged_mapping[i] = merged_mapping[root]
-    
-    merged_labels = np.array([merged_mapping[label] for label in labels])
-    segmentation_mask = merged_labels.reshape((h, w))
+    # Use the k-means labels directly as the segmentation mask
+    segmentation_mask = labels.reshape((h, w))
     
     if apply_morph_open:
         print("[INFO] Applying morphological opening to reduce specks...")
-        kernel = np.ones((3,3), np.uint8)
+        kernel = np.ones((3, 3), np.uint8)
         unique_labels = np.unique(segmentation_mask)
         morph_mask = segmentation_mask.copy()
         for lab in unique_labels:
-            lab_mask = (morph_mask == lab).astype(np.uint8)*255
+            lab_mask = (morph_mask == lab).astype(np.uint8) * 255
             lab_mask_opened = cv2.morphologyEx(lab_mask, cv2.MORPH_OPEN, kernel)
             difference = cv2.subtract(lab_mask, lab_mask_opened)
             removed_pixels = np.where(difference > 0)
@@ -131,11 +99,11 @@ def auto_color_by_numbers(
         removed_coords = np.where(morph_mask == -1)
         for i, j in zip(removed_coords[0], removed_coords[1]):
             neighbors = []
-            for di in [-1,0,1]:
-                for dj in [-1,0,1]:
+            for di in [-1, 0, 1]:
+                for dj in [-1, 0, 1]:
                     if di == 0 and dj == 0:
                         continue
-                    ni, nj = i+di, j+dj
+                    ni, nj = i + di, j + dj
                     if 0 <= ni < h and 0 <= nj < w:
                         if morph_mask[ni, nj] != -1:
                             neighbors.append(morph_mask[ni, nj])
@@ -157,11 +125,10 @@ def auto_color_by_numbers(
         mask = final_mask == label_val
         avg_hsv = np.mean(hsv[mask], axis=0)
         avg_hsv_uint8 = np.array(avg_hsv, dtype=np.uint8).reshape((1, 1, 3))
-        # Convert average HSV color to BGR first
+        # Convert average HSV color to BGR, then to RGB for storage
         avg_bgr = cv2.cvtColor(avg_hsv_uint8, cv2.COLOR_HSV2BGR)[0][0]
-        # Convert BGR to RGB for storage
         avg_rgb = (int(avg_bgr[2]), int(avg_bgr[1]), int(avg_bgr[0]))
-        master_list[str(label_val + 1)] = avg_rgb  # Store as RGB
+        master_list[str(label_val + 1)] = avg_rgb  # Stored as RGB
     
     print("[INFO] Generating final output image with contours and labels...")
     output_img = np.full((h, w, 3), 255, dtype=np.uint8)
@@ -199,9 +166,7 @@ def generate_test_colored_image(final_mask, master_list):
     h, w = final_mask.shape
     colored_img = np.zeros((h, w, 3), dtype=np.uint8)
     for label_val in np.unique(final_mask):
-        # Get the stored RGB color
         rgb_color = master_list[str(label_val + 1)]
-        # Convert to BGR by swapping the first and last channels
         bgr_color = (rgb_color[2], rgb_color[1], rgb_color[0])
         colored_img[final_mask == label_val] = bgr_color
     return colored_img
@@ -216,10 +181,10 @@ if __name__ == "__main__":
     print("[INFO] Running 'auto_color_by_numbers' on:", input_path)
     output_img, master_list, final_mask = auto_color_by_numbers(
         image,
-        threshold_option='normal',     # Options: 'basic', 'normal', 'detailed'
-        min_region_size=1000,           # Adjust to control minimal region size
-        downsample_factor=3,            # Increase to speed up processing
-        apply_morph_open=False          # Set True to apply morphological opening
+        detail_option='normal',    # Options: 'basic', 'normal', 'detailed'
+        min_region_size=1000,       # Adjust to control minimal region size
+        downsample_factor=3,        # Increase to speed up processing
+        apply_morph_open=False      # Set True to apply morphological opening
     )
 
     output_path = "output_numbered.png"
