@@ -69,23 +69,6 @@ Auto Color by Numbers is a computer vision project that transforms any input ima
    Navigate to http://localhost:5000 to use the web app.
 
 
-## Project Structure
-
-auto-color-by-numbers/<br />
-├── app.py                   # Flask web application<br />
-├── color_by_numbers.py      # Core image processing functions<br />
-├── requirements.txt         # Python dependencies<br />
-├── README.md                # Project documentation<br />
-├── templates/<br />
-│   └── index.html           # HTML template for the web app<br />
-└── static/<br />
-    ├── css/<br />
-    │   └── style.css        # CSS styling for the web app<br />
-    ├── js/<br />
-    │   └── main.js          # JavaScript for client-side logic<br />
-    ├── uploads/             # Directory for uploaded images<br />
-    └── processed/           # Directory for processed output images<br />
-
 ## Author
 
 Feel free to submit a pull request for any updates, or contact the author, Alex Holland, at hello@alexholland.tech for any further questions.
